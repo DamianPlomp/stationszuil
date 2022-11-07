@@ -1,1 +1,2 @@
-print()
+import psycopg2
+
