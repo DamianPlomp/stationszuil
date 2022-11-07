@@ -11,13 +11,15 @@ def get_messages():
 
     messageslst = []
 
-    c.execute('SELECT message, station FROM bericht ORDER BY submissionTimeStamp DESC limit 5') # Selecteert laatste vijf berichten
+    c.execute('SELECT message, station FROM bericht ORDER BY id DESC limit 5') # Selecteert laatste vijf berichten
     message_info = c.fetchall()
     for msg in message_info:
         messageslst.append(msg[1])
         messageslst.append(': ')
         messageslst.append(msg[0])
         messageslst.append('\n')
+
+    print(messageslst)
 
     connection.commit()
     c.close()
@@ -52,3 +54,4 @@ def get_facilities():
 
     return facilities_there
 
+get_messages()
