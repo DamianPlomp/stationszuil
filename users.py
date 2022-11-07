@@ -3,6 +3,10 @@ import time
 from datetime import *
 
 def insert_message():
+    """
+    Deze functie schrijft de berichten weg naar 'messages.txt'.
+    :return:
+    """
     stations = ["Amsterdam", "Groningen", "Delft"]
 
     now = datetime.now()

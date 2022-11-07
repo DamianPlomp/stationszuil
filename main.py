@@ -2,7 +2,7 @@ import psycopg2
 from users import *
 from moderators import *
 
-def menu():
+def menu(): # Menu voor het kiezen van de verschillende opties.
     while True:
         print("Welcome to our program.")
         menu_choice = int(input("1. Would you like to leave a message?\n"

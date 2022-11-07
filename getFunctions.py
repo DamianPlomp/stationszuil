@@ -1,14 +1,17 @@
 import psycopg2
-import requests
 
 def get_messages():
+    """
+    Deze functie haalt de laatste vijf berichten op uit de kolom 'bericht' en returned deze
+    :return:
+    """
     connection = psycopg2.connect(user="postgres", password="1234", host="localhost", database="stationszuil",
                                   port="5432")
     c = connection.cursor()
 
     messageslst = []
 
-    c.execute('SELECT message, station FROM bericht ORDER BY submissionTimeStamp DESC limit 5')
+    c.execute('SELECT message, station FROM bericht ORDER BY submissionTimeStamp DESC limit 5') # Selecteert laatste vijf berichten
     message_info = c.fetchall()
     for msg in message_info:
         messageslst.append(msg[1])
@@ -21,21 +24,31 @@ def get_messages():
 
     return messageslst
 
-def get_weather(station):
-    weather_data = []
+def get_facilities():
+    """
+    Deze functie haalt de bijbehorende faciliteiten op die bij de laatste vijf berichten horen. We willen echter hebben
+    dat hij de naam van de faciliteiten returned en niet true/false.
+    :return:
+    """
+    facilities = ['station_city', 'country', 'ov_bike', 'elevator', 'toilet', 'park_and_ride']
 
-    weather_url = 'https://api.openweathermap.org/data/2.5/weather?q=' + station + '&appid=3312f47e4a2e28ca45183d4a8f2e29a4'
+    connection = psycopg2.connect(user="postgres", password="1234", host="localhost", database="stationszuil",
+                                  port="5432")
+    c = connection.cursor()
 
-    response = requests.get(weather_url).json()
+    facilities_there = []
 
-    temp = int(response['main']['temp'] - 273)
-    description = response['weather'][0]['description']
+    query = ("SELECT country, ov_bike, elevator, toilet, park_and_ride FROM station_service AS S INNER JOIN bericht AS B ON S.station_city = B.station ORDER BY submissiontimestamp DESC limit 5 ")
+    c.execute(query)
+    booleans = c.fetchall()
+    for facility, facility_true in zip(facilities, booleans[0]): # Met deze for-loop zorg ik ervoor dat ik de namen krijg van de faciliteiten die aanwezig zijn.
+        if isinstance(facility_true, str):
+            facilities_there.append(facility_true)
+        elif facility_true:
+            facilities_there.append(facility)
 
-    temp_string = str(temp) + str(chr(176))
+    connection.commit()
+    c.close()
 
-    weather_data.append(temp_string)
-    weather_data.append(description)
+    return facilities_there
 
-    weather_label.config(text=''.join(weather_data))
-
-    return weather_data
