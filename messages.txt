@@ -1,0 +1,3 @@
+Cool!;08/11/2022 15:25:08;Damian;Amsterdam;
+Nice!;08/11/2022 15:25:29;Fee;Groningen;
+Wauw!;08/11/2022 15:26:09;Damian;Groningen;
