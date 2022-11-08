@@ -19,8 +19,6 @@ def get_messages():
         messageslst.append(msg[0])
         messageslst.append('\n')
 
-    print(messageslst)
-
     connection.commit()
     c.close()
 

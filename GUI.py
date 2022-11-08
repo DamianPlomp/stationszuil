@@ -33,8 +33,6 @@ def get_weather(station):
 
     my_string_var.set(''.join(weather_data))
 
-    print(weather_data)
-
     return my_string_var
 
 message_frame = customtkinter.CTkFrame(root, corner_radius=4, fg_color='#888B8D')
